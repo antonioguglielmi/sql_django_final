@@ -111,9 +111,10 @@ class Question(models.Model):
 
     # <HINT> A sample model method to calculate if learner get the score of the question
     def is_get_score(self, selected_ids):
-        all_answers = self.choice_set.filter(is_correct=True).count()
-        selected_correct = self.choice_set.filter(is_correct=True, id__in=selected_ids).count()
-        if all_answers == selected_correct:
+        all_answers = self.choice_set.filter(correct=True).count()
+        selected_correct = self.choice_set.filter(correct=True, id__in=selected_ids).count()
+        selected_incorrect = self.choice_set.filter(correct=False, id__in=selected_ids).count()
+        if (all_answers == selected_correct) and (selected_incorrect == 0):
             return True
         else:
             return False
